@@ -1,0 +1,6 @@
+# are you kidding
+a = b + c
+My Name is leo
+
+# will the blank line be displayed before this line?
+output = "Thanks indeed"
