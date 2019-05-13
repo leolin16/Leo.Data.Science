@@ -76,6 +76,8 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
+# since we need experiment, comment data folder here temporarily
+# /data/
 
 # Mac OS-specific storage files
 .DS_Store
