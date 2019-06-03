@@ -10,13 +10,13 @@ services:
     - "4040:4040/tcp"
     networks:
     - pyspark-net
-    working_dir: /home/$USER
+    working_dir: /home/leolin
     environment:
       CHOWN_HOME: "yes"
       GRANT_SUDO: "yes"
       NB_UID: 1000
       NB_GID: 100
-      NB_USER: $USER
+      NB_USER: leolin
       NB_GROUP: staff
     user: root
     deploy:
@@ -24,14 +24,14 @@ services:
      restart_policy:
        condition: on-failure
     volumes:
-    - $PWD:/home/$USER/work
+    - ../:/home/leolin/work
     entrypoint:
     - start-notebook.sh
     - --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USERNAME: $USER
+      POSTGRES_USERNAME: leolin
       POSTGRES_PASSWORD: postgres1234
       POSTGRES_DB: demo
     ports:
@@ -39,7 +39,7 @@ services:
     networks:
     - pyspark-net
     volumes:
-    - $HOME/data/postgre:/var/lib/postgresql/data
+    - postgres:/var/lib/postgresql/data
     deploy:
      restart_policy:
        condition: on-failure
@@ -52,6 +52,7 @@ services:
     deploy:
      restart_policy:
        condition: on-failure
-
+volumes:
+  postgres:
 networks:
   pyspark-net:
