@@ -3,8 +3,29 @@
 
 version: "3.7"
 services:
+  neo4j:
+    image: neo4j:3.5.6-enterprise
+    container_name: "neo4j"
+    volumes:
+      - $PWD/setup/plugins:/plugins
+      - $PWD/data/raw/algorithms/graph:/import
+      - $HOME/data/neo4j:/data
+    ports:
+      - "7474:7474/tcp"
+      - "7687:7687/tcp"
+    environment:
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_AUTH: "neo4j/neo"
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.*,algo.*"
+    networks:
+    - pyspark-net
+    deploy:
+     restart_policy:
+       condition: on-failure
+
   pyspark:
     image: jupyter/all-spark-notebook:latest
+    container_name: "pyspark"
     ports:
     - "8888:8888/tcp"
     - "4040:4040/tcp"
@@ -28,8 +49,10 @@ services:
     entrypoint:
     - start-notebook.sh
     - --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
+
   postgres:
     image: postgres:latest
+    container_name: "postgres"
     environment:
       POSTGRES_USERNAME: $USER
       POSTGRES_PASSWORD: postgres1234
@@ -43,8 +66,10 @@ services:
     deploy:
      restart_policy:
        condition: on-failure
+  
   adminer:
     image: adminer:latest
+    container_name: "adminer"
     ports:
     - "8080:8080/tcp"
     networks:
