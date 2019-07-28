@@ -5,7 +5,7 @@ version: "3.7"
 services:
   neo4j:
     image: neo4j:3.5.6-enterprise
-    container_name: "neo4j"
+    # container_name: "neo4j"
     volumes:
       - $PWD/setup/plugins:/plugins
       - $PWD/data/raw/algorithms/graph:/import
@@ -24,8 +24,9 @@ services:
        condition: on-failure
 
   pyspark:
-    image: jupyter/all-spark-notebook:latest
-    container_name: "pyspark"
+    # image: jupyter/all-spark-notebook:latest
+    image: leolin16/datascience-notebook:latest
+    # container_name: "pyspark"
     ports:
     - "8888:8888/tcp"
     - "4040:4040/tcp"
@@ -52,7 +53,7 @@ services:
 
   postgres:
     image: postgres:latest
-    container_name: "postgres"
+    # container_name: "postgres"
     environment:
       POSTGRES_USERNAME: $USER
       POSTGRES_PASSWORD: postgres1234
@@ -69,7 +70,7 @@ services:
   
   adminer:
     image: adminer:latest
-    container_name: "adminer"
+    # container_name: "adminer"
     ports:
     - "8080:8080/tcp"
     networks:

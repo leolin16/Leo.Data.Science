@@ -14,12 +14,16 @@
    > pip3 install -r requirements.txt
 2. run docker manually for test purpose:
    > sudo docker run -d -p 8888:8888 -v $PWD:/home/jovyan/work jupyter/all-spark-notebook start-notebook.sh --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
-3. deploy docker stack for pyspark (should go to root folder of this project):
+3. docker build -t leolin16/datascience-notebook:0.1 ./setup
+4. docker tag leolin16/datascience-notebook:0.1 leolin16/datascience-notebook:latest
+5. docker push leolin16/datascience-notebook:0.1
+6. docker push leolin16/datascience-notebook:latest
+7. deploy docker stack for pyspark (should go to root folder of this project):
    > docker stack deploy -c setup/spark-notebook-postgre-stack.yml leopyspark
-4. delete stack:
+8. delete stack:
    > docker stack rm leopyspark
-5. check status:
-   > docker stack ps leopyspark \
+9. check status:
+   > docker stack ps leopyspark
    > 
 
 ## Go to Neo4j
