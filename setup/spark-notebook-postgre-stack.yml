@@ -51,8 +51,8 @@ services:
     command:
     - start-notebook.sh
     - --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
-    - --NotebookApp.ip='*'
     - --NotebookApp.allow_origin='*'
+    # - --NotebookApp.ip='*'
 
   postgres:
     image: postgres:latest
