@@ -27,8 +27,10 @@ LABEL Author="Leo Lin <leolin@leolin.studio>"
 #     conda config --remove channels defaults && \
 #     conda config --set show_channel_urls yes
 
+RUN conda update -n base conda
 # pytorch
-RUN conda install pytorch torchvision -c pytorch -y
+RUN conda install pytorch -c pytorch -y
+RUN conda install torchvision -c pytorch -y
 # conda install pytorch-cpu torchvision-cpu -c pytorch -y
 
 # spotlight(https://github.com/maciejkula/spotlight)
