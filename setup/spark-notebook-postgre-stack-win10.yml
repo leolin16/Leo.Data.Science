@@ -4,7 +4,8 @@
 version: "3.7"
 services:
   pyspark:
-    image: jupyter/all-spark-notebook:latest
+    # image: jupyter/all-spark-notebook:latest
+    image: leolin16/datascience-notebook:latest
     ports:
     - "8888:8888/tcp"
     - "4040:4040/tcp"
@@ -25,9 +26,12 @@ services:
        condition: on-failure
     volumes:
     - ../:/home/leolin/work
-    entrypoint:
+    # entrypoint:
+    command:
     - start-notebook.sh
     - --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
+    - --NotebookApp.ip='*'
+    - --NotebookApp.allow_origin='*'
   postgres:
     image: postgres:latest
     environment:

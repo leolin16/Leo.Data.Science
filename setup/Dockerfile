@@ -27,12 +27,23 @@ LABEL Author="Leo Lin <leolin@leolin.studio>"
 #     conda config --remove channels defaults && \
 #     conda config --set show_channel_urls yes
 
-RUN conda update -n base conda
+# RUN conda update -n base conda
 # pytorch
-RUN conda install pytorch -c pytorch -y
-RUN conda install torchvision -c pytorch -y
+RUN conda install -y 'pytorch' -c pytorch && \
+    conda clean --all -f -y && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
+RUN conda install -y  'torchvision' -c pytorch && \
+    conda clean --all -f -y && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
+
+# RUN conda install pytorch -c pytorch -y
+# RUN conda install torchvision -c pytorch -y
 # conda install pytorch-cpu torchvision-cpu -c pytorch -y
 
 # spotlight(https://github.com/maciejkula/spotlight)
 # RUN conda install -c maciejkula -c soumith spotlight=0.1.2
+
 
