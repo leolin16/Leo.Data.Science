@@ -31,7 +31,7 @@ RUN conda update -n base conda -y && \
     conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
-    
+
 # pytorch
 RUN conda install -y 'pytorch' -c pytorch && \
     conda clean --all -f -y && \
@@ -50,4 +50,8 @@ RUN conda install -y  'torchvision' -c pytorch && \
 # spotlight(https://github.com/maciejkula/spotlight)
 # RUN conda install -c maciejkula -c soumith spotlight=0.1.2
 
+RUN conda install -y  'opencv' -c conda-forge && \
+    conda clean --all -f -y && \
+    fix-permissions $CONDA_DIR && \
+    fix-permissions /home/$NB_USER
 
