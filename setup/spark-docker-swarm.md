@@ -13,7 +13,8 @@
 1. for local dev, install related python packages with:
    > pip3 install -r requirements.txt
 2. run docker manually for test purpose:
-   > sudo docker run -d -p 8888:8888 -v $PWD:/home/jovyan/work jupyter/all-spark-notebook start-notebook.sh --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21'
+   > sudo docker run -d --name leo-notebook -p 8888:8888 -v $PWD:/home/jovyan/work jupyter/all-spark-notebook start-notebook.sh --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21' \
+   > docker run -d --name leo-notebook -p 8888:8888 -v ${PWD}:/home/jovyan/work leolin16/datascience-notebook start-notebook.sh --NotebookApp.password='sha1:c2a73212ae07:068c44d9bc9275e917a9e2f8a7c70b6191f6fd21' --NotebookApp.allow_origin='*'
 3. docker build -t leolin16/datascience-notebook:0.1 ./setup
 4. docker tag leolin16/datascience-notebook:0.1 leolin16/datascience-notebook:latest
 5. docker push leolin16/datascience-notebook:0.1
