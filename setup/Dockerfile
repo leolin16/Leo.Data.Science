@@ -55,6 +55,10 @@ RUN conda install -y  'opencv' -c conda-forge && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
 
+USER root
+
 RUN apt-get update -y && \
-    sudo apt-get install python-opencv && \
+    sudo apt-get install -y python-opencv && \
     rm -rf /var/lib/apt/lists/*
+
+USER $NB_UID
