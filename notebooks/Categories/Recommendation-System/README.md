@@ -43,7 +43,7 @@
    5. find the nearest neighbors of the user - to be the products to recommend to the user
 2. Find products liked by similar users - collaborative filtering
    1. uses only user behavior data
-   2. extract rating(explicit or implicit) for per user per product
+   2. extract rating(explicit{ask consumer to rate or thumb up/down} or implicit{things customers click/purchase/consume}) for per user per product
    3. get rating matrix with user as y axis and products as x axis
    4. fill in the blank cells(product with no user rating) with ML techniques (nearest neighbor model - use the ratings of "most similar" users/latent factor analysis - solve for underlying factors that drive the ratings)
       1. measure distance of users
@@ -56,11 +56,23 @@
 
 ### types
 
+1. top N recommender
+   1. option 1
+      1. candidate generation
+         1. from individual interests(distributed nosql datastore{explicit and implicit history data} like cassendra/mongo/memcached, lots of data with simple query, normalized using techniques such as mean centering/z-scores)
+         2. from/to item similarities()
+      2. candidate ranking - passed in from candidate generation
+      3. filtering - passed in from candidate ranking
+   2. option 2
+      1. candidate generation
+         1. from/to rating predictions table(every user for every item)
+      2. candidate ranking
+      3. filtering
 
 ## Setup
 
 1. anaconda [ref](http://deeplearning.lipingyang.org/2018/12/25/conda-commands-create-virtual-environments-for-python-with-conda/)
-   1. create virtual env: `conda create -n [env name] python=[version] [packages separate by space, eg: anaconda]`
+   1. create virtual env: `conda create -n [env name] python=[version] [packages separate by space, eg: anaconda]` I've created RecSys
    2. activate env: `source/conda (~/anaconda3/bin/)activate [env name]`
    3. list envs: `conda info -e` or `conda info --envs` or `conda env list`
    4. install packages to a venv: `conda install -n [env name] [package name]` or simply activate the venv and then `conda install [package name]`
@@ -72,10 +84,22 @@
    10. switch back to bash then to zsh: `chsh -s /bin/bash` -> restart iterm2 -> `zsh`, if wanna return to zsh: `chsh -s /bin/zsh`
    11. `echo 'source ~/.bash_profile' >> ~/.zshrc` to append bash variables to zsh
    12. update conda: `conda update conda`
+   13. add `export PATH="/Users/username/anaconda3/bin:$PATH"` to ~/.bash_profile or ~/.zshrc to enable vscode recognition of venv created by conda.
 2. scikit-surprise
    1. conda install -c conda-forge scikit-surprise
 3. materials
-   1. [download](https://sundog-education.com/recsys/)
+   1. [download](https://sundog-education.com/RecSys/)
+
+## Test if OK
+
+run GettingStarted.py like `python -u "/Users/leolin/Projects/python/Leo.Data.Science/notebooks/Categories/Recommendation-System/RecSys-Materials/1. GettingStarted/GettingStarted.py"`
+
+## issues
+
+1. for unresolved import for local .py within vscode
+   1. ctrl + shift + p -> configure language specific settings -> python
+   2. in the open settings.json, uncomment `"python.jediEnabled": false`
+   3. restart vscode and install microsoft python language server & pylint respectively, pylint should be installed to your current venv
 
 $a+b=c$
 $$
