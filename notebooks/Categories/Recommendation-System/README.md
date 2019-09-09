@@ -43,13 +43,9 @@
    5. find the nearest neighbors of the user - to be the products to recommend to the user
 2. Find products liked by similar users - collaborative filtering
    1. uses only user behavior data
-   2. extract rating(explicit{ask consumer to rate or thumb up/down} or implicit{things customers click/purchase/consume}) for per user per product
+   2. extract rating(explicit{ask consumer to rate or thumb up/down} or implicit{things customers click/purchase/consume/pageview}) for per user per product
    3. get rating matrix with user as y axis and products as x axis
    4. fill in the blank cells(product with no user rating) with ML techniques (nearest neighbor model - use the ratings of "most similar" users/latent factor analysis - solve for underlying factors that drive the ratings)
-      1. measure distance of users
-         1. Euclidean Distance(physical distance), x is dimension 1, y is dimension 2: $\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+...[nth]}$
-         2. Correlation Distance: how in sync the variations or deviations from the mean are for each of the value, x is value of each dimension for the first element, y is value of each dimension for the second element: $$
-         3. Hamming Distance
 3. Find complementary products(above 2 are substitutable for each other, while here is complementary) - association rules learning
    1. Conditional Probabilities
    2. Help create offers for buyers of a certain product
@@ -68,6 +64,24 @@
          1. from/to rating predictions table(every user for every item)
       2. candidate ranking
       3. filtering
+   3. steps
+      1. Setup the data
+         1. Ratings - User,ISBN,Rating
+         2. Book Metadata - ISBN,Title,Author
+         3. Function to lookup metadata for an ISBN
+         4. function to find the favorite books for a user
+      2. Construct a rating matrix
+         1. nearest neighbors: Ratings to Rating Matrix with users and products - pandas.pivot_table
+         2. latent factors:  - scipy.coo_matrix
+      3. method varied steps
+         1. Find the K Nearest Neighbors - KNN
+            1. calculate user distance - scipy(active user, k)
+            2. function(active user, k) with distance function -> K nearest neighbors
+         2. Initialize factor matrices - LF
+      4. Find the top N recommendations
+         1. average the ratings of nearest neighbors for unrated books
+         2. sort in descending order
+         3. pick the top N
 
 ## Setup
 
@@ -100,8 +114,31 @@ run GettingStarted.py like `python -u "/Users/leolin/Projects/python/Leo.Data.Sc
    1. ctrl + shift + p -> configure language specific settings -> python
    2. in the open settings.json, uncomment `"python.jediEnabled": false`
    3. restart vscode and install microsoft python language server & pylint respectively, pylint should be installed to your current venv
-
+2. [for latex](https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference)
 $a+b=c$
 $$
 f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi \xi x} \,d\xi
 $$
+
+## Algorithms
+
+### Nearest Neighbors Model
+
+1. [book ratings dataset](http://www.bookcrossing.com)
+2. choose collaborative filtering
+3. fillin blanks with values calculated with weight of each user by existing product similarity. if k-means, then K nearest neighbors of a user and take average of the ratings of those neighbors for unrated books
+   1. measure distance of users - SciPy
+      1. Euclidean Distance(physical distance), x is dimension 1, y is dimension 2: $\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+...[nth]}$
+      2. Correlation Distance: how in sync the variations or deviations from the mean are for each of the value, x is value of each dimension for the first user, y is value of each dimension for the second user, mean is $\bar{x}$ or $\bar{y}$, then $Corr(x,y) = \frac{\sum_i(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum(x_i-\bar{x})^2}\sqrt{\sum(y_i-\bar{y})^2}}$, lies in the range of [-1.1], Correlation distance = 1 - Correlation
+      3. Hamming Distance = % Disagreement, say U1: 3,3,5,2,1; U2: 4,5,2,2,1; 60%
+
+### Latent Factor Analysis
+
+1. Analogous to PCA(Principal Components Analysis)
+2. turn user-product ratings matrix into 2 matrix
+   1. Users(row)-Factors(col) -> Pu
+   2. Factors(row)-Products(col) -> Qi
+   3. $r_{ui} = p_u.q_i$
+   4. $min \sum((r_{ui}-p_u.q_i)^2 + \lambda(||p_u||^2+||q_i||^2))$
+   regularization term with regularization factor
+   standard optimization problem
