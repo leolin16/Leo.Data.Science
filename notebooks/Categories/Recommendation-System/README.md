@@ -79,9 +79,11 @@
             2. function(active user, k) with distance function -> K nearest neighbors
          2. Initialize factor matrices - LF
       4. Find the top N recommendations
-         1. average the ratings of nearest neighbors for unrated books
-         2. sort in descending order
-         3. pick the top N
+         1. KNN
+            1. average the ratings of nearest neighbors for unrated books
+            2. sort in descending order
+            3. pick the top N
+         2. LF ...
 
 ## Setup
 
@@ -142,3 +144,57 @@ $$
    4. $min \sum((r_{ui}-p_u.q_i)^2 + \lambda(||p_u||^2+||q_i||^2))$
    regularization term with regularization factor
    standard optimization problem
+
+### Association Rules Learning
+
+#### Market Basket Analysis:
+1. What items are bought together in a transaction?
+2. What items are bought by a user in a short period of time?
+
+#### Conditional Probabilities
+Association Rule: Does a person buying smartphone increase the likelihood of buying a headphone?
+
+#### measuring Rule Strength
+
+1. Support - how a product or a group of products are sold independently, Likelihood of all items in the rule being in a single transaction
+2. Confidence - the likelihood of products being sold together rather than individually, likelihood of second item being bought once the first is bought
+3. Lift - the delta between support and confidence, change in likelihood of second item being bought once the first is bought
+
+1% buyers bought headphone and mobile together -> support is 1%
+
+out of all transactions with mobile, how many include headphone? P(headphone/mobile) = 5% -> confidence is 5%
+
+P(headphone/mobile) = P(headphone,mobile)/P(mobile)
+Conf(headphone/mobile) = Supp(headphone,mobile)/Supp(mobile)
+
+How much does the likelihood of buying headphone increase when mobile is bought? - measured using LIFT
+
+P(headphone) = 3%
+P(headphone/mobile) = 5%
+Lift(mobile=>headphone) = P(headphone/mobile)/P(headphone) = Conf(headphone/mobile)/Supp(mobile) = 1.67
+
+#### Apriori Algorithm
+1. Brute Force
+   1. find all possible 2 item sets to generate 2 rules
+   2. find all possible N item sets to generate N rules
+2. Apriori Algorithm
+   1. Prine the number of items in each stage
+   2. Use metrics(of support and confidence) to check how important an item set is
+
+#### Steps for Apriori Algorithm
+
+1. Find 1 item sets - keep only those with a minimum support
+2. Find 2 item sets - Use only the items left from previous step, keep only item sets with minimum support
+3. Generate 2 item rules - Keep only those with a minimum confidence
+4. Find 3 item sets - Use only the items left from previous step, Keep only item sets with minimum support
+5. Generate 3 item rules - Keep only those with a minimum confidence
+
+#### steps for Association Rule Learning
+
+1. Setup the data - [dataset-lost](https://wiki.csc.calpoly.edu/datasets/wiki/ExtendedBakery),[dataset1](https://github.com/Stocco/Data-Mining-the-Extended-Bakery),[dataset2](https://github.com/ngjiawaie/Extended_Bakery_Dataset),[brief](http://users.csc.calpoly.edu/~dekhtyar/466-Spring2009/labs/extendedBakery.pdf)
+2. Compute the support - setup a function to compute support for any items
+3. Implement the Apriori Algorithm
+
+
+
+
